@@ -21,12 +21,11 @@ class Chex:
     if key is integer then hi will be encoded to string and returned
     if key is string then hi will be decoded to int and returned    
     
-    """
-    
-    str_values = dict()
-    int_values = dict()
-    
+    """  
+
     def __init__(self, size=None, phrase=None):
+        self.str_values = dict()
+        self.int_values = dict()
         """Initialize code length and chars set"""        
         self.size = size if size else 8
         self.phrase = phrase if phrase else \
@@ -90,3 +89,46 @@ class Chex:
                
             self.int_values[self.key] = total
         return self.int_values[self.key]
+
+
+a = Chex(3, 'abc')
+
+a_ex_result = [
+
+    'aaa', 'aab', 'aac', 'aba', 'abb', 'abc', 'aca', 'acb', 'acc', 'baa',
+
+    'bab', 'bac', 'bba', 'bbb', 'bbc', 'bca', 'bcb', 'bcc', 'caa', 'cab',
+
+    'cac', 'cba', 'cbb', 'cbc', 'cca', 'ccb', 'ccc',
+
+]
+
+b = Chex(3, 'erd')
+
+b_ex_result = [
+
+    'eee', 'eer', 'eed', 'ere', 'err', 'erd', 'ede', 'edr', 'edd', 'ree',
+
+    'rer', 'red', 'rre', 'rrr', 'rrd', 'rde', 'rdr', 'rdd', 'dee', 'der',
+
+    'ded', 'dre', 'drr', 'drd', 'dde', 'ddr', 'ddd',
+
+]
+
+
+
+for i in range(26):
+
+    a_result =  a[i+1]
+
+    a_exp = a_ex_result[i+1]
+
+    print('OK\t' if a_result == a_exp  else 'ERR\t', a_result, a_exp)
+
+
+
+    b_result =  b[i+1]
+
+    b_exp = b_ex_result[i+1]
+
+    print('OK\t' if b_result == b_exp  else 'ERR\t', b_result, b_exp)
