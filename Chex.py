@@ -2,6 +2,18 @@ import random
 import math
 
 
+
+import time
+    
+class Profiler(object):
+    def __enter__(self):
+        self._startTime = time.time()
+            
+    def __exit__(self, type, value, traceback):
+        print("Elapsed time: {:.6f} sec".format(time.time() - self._startTime))
+
+
+
 class OverRangeException(Exception):
     """..."""
     
@@ -32,10 +44,14 @@ class Chex:
                 raise OverRangeException("Key %s is very big."%(key,))
             elif key<1:
                 raise OverRangeException("Key %s is very small."%(key,))                
-            return str(self)
+            res = str(self)
+            self.int_values[res] = key
+            return res
         else:
             self.key = key
-            return int(self)
+            res = int(self)
+            self.str_values[res] = key
+            return res            
     
     def __str__(self):
         """..."""        
@@ -44,7 +60,6 @@ class Chex:
             digit = self.key
             size = self.size
             length = len(self.phrase)
-            values = list()
             results = [self.phrase[0] for i in range(size)]            
             while digit/length>1:
                 i = digit%length
@@ -79,4 +94,3 @@ class Chex:
                
             self.int_values[self.key] = total+1
         return self.int_values[self.key]
-
