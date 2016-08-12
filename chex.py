@@ -1,4 +1,3 @@
-import random
 import math
 
 
@@ -23,13 +22,12 @@ class Chex:
     
     """  
 
-    def __init__(self, size=None, phrase=None):
+    def __init__(self, size=8, phrase='uabszcowejvglrtyhkqmnfpixd'):
         """Initialize code length and chars set"""        
         self.str_values = dict()
-        self.int_values = dict()        
-        self.size = size if size else 8
-        self.phrase = phrase if phrase else \
-        'rabszcowejvglutyhkqmnfpixd'
+        self.int_values = dict()
+        self.size = size
+        self.phrase = phrase
         self.phrase_len = len(self.phrase)
 
     def __getitem__(self, key):
@@ -66,7 +64,7 @@ class Chex:
     
     def __int__(self):
         """Function to decode."""        
-        size =len(self.phrase)
+        size = self.phrase_len
         if not self.int_values.get(self.key, False):
             positions = dict()
             length = len(self.key)-1
