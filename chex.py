@@ -24,18 +24,19 @@ class Chex:
     """  
 
     def __init__(self, size=None, phrase=None):
-        self.str_values = dict()
-        self.int_values = dict()
         """Initialize code length and chars set"""        
+        self.str_values = dict()
+        self.int_values = dict()        
         self.size = size if size else 8
         self.phrase = phrase if phrase else \
         'rabszcowejvglutyhkqmnfpixd'
+        self.phrase_len = len(self.phrase)
 
     def __getitem__(self, key):
         """Return code or decimal digit."""
+        self.key = key
         if isinstance(key, int):
-            self.key = key            
-            if key>len(self.phrase)**self.size:
+            if key>self.phrase_len**self.size:
                 raise OverRangeException("Key %s is very big."%(key,))
             elif key<1:
                 raise OverRangeException("Key %s is very small."%(key,))                
@@ -43,7 +44,6 @@ class Chex:
             self.int_values[res] = key
             return res
         else:
-            self.key = key
             res = int(self)
             self.str_values[res] = key
             return res            
@@ -51,21 +51,18 @@ class Chex:
     def __str__(self):
         """Function to encode."""        
         if not self.str_values.get(self.key, False):
-            rank=0
             digit = self.key
             size = self.size-1
-            length = len(self.phrase)
-            results = [self.phrase[0] for i in range(size+1)]            
-            while digit/length>=1:
-                i = digit%length
+            length = self.phrase_len
+            results = [self.phrase[0]]*(size+1)            
+            while True:
+                digit, i = divmod(digit, length)
                 results[size] = self.phrase[i]
                 size -= 1                
-                rank+=1
-                digit=digit//length
-            results[size] = self.phrase[digit]
+                if digit==0:
+                    break
             self.str_values[self.key] = ''.join(results)
         return self.str_values[self.key]
-
     
     def __int__(self):
         """Function to decode."""        
@@ -80,12 +77,8 @@ class Chex:
                 length-=1
                 if not positions.get(i, False):
                     positions[i] = self.phrase.index(i)
-                if j==0:
-                    total = positions[i]
-                else:
-                    total += (size**j)*positions[i]
-       
+                total += (size**j)*positions[i]
                 j+=1
-               
             self.int_values[self.key] = total
         return self.int_values[self.key]
+
