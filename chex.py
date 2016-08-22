@@ -1,14 +1,3 @@
-import math
-
-
-class OverRangeException(Exception):
-    """Exception class to Chex"""
-    
-    def __init__(self, message):
-        """You may add custom meesage, when throw this exception"""        
-        self.message = message
-
-
 class Chex:
     """Encode && decode decimal digits from custom set of chars
     
@@ -23,7 +12,16 @@ class Chex:
     """  
 
     def __init__(self, size=8, phrase='uabszcowejvglrtyhkqmnfpixd'):
-        """Initialize code length and chars set"""        
+        """Initialize code length and chars set"""
+        if not isinstance(size, int):
+            raise TypeError('Size must be set as integer')
+        if size<1:
+            raise ValueError('Size must be grate than 0')
+        if not isinstance(phrase, str):
+            raise TypeError('Alphabet phrase must be set as string')
+        if len(phrase)!=len(set(phrase)):
+            raise ValueError('Alphabet contain duplicates')
+        
         self.str_values = dict()
         self.int_values = dict()
         self.size = size
@@ -35,16 +33,18 @@ class Chex:
         self.key = key
         if isinstance(key, int):
             if key>self.phrase_len**self.size:
-                raise OverRangeException("Key %s is very big."%(key,))
+                raise KeyError("Key %s is very big."%(key,))
             elif key<1:
-                raise OverRangeException("Key %s is very small."%(key,))                
+                raise KeyError("Key %s is very small."%(key,))                
             res = str(self)
             self.int_values[res] = key
             return res
-        else:
+        elif isinstance(key, str):
             res = int(self)
             self.str_values[res] = key
-            return res            
+            return res
+        else:
+            raise KeyError
     
     def __str__(self):
         """Function to encode."""        
