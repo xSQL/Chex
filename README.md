@@ -7,8 +7,8 @@ from Chex import Chex
 
 c = Chex()
 
-print([67]) // print 'rrrrrrbt'
-print(['rrrrrrbt']) // print 67
+print(c.get_key_by_id(67)) // print 'rrrrrrbt'
+print(c.get_id_by_key('rrrrrrbt')) // print 67
 ```
 
 Also you may set custom hash length and set of chars
@@ -19,5 +19,5 @@ from Chex import Chex
 c = Chex()
 c = Chex(4, 'abcdefg')
 
-print(c['aaaa']) // print 1
+print(c.get_id_by_key('aaab')) // print 1
 ```

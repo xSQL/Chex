@@ -22,61 +22,45 @@ class Chex:
         if len(phrase)!=len(set(phrase)):
             raise ValueError('Alphabet contain duplicates')
         
-        self.str_values = dict()
-        self.int_values = dict()
         self.size = size
         self.phrase = phrase
         self.phrase_len = len(self.phrase)
-
-    def __getitem__(self, key):
-        """Return code or decimal digit."""
-        self.key = key
-        if isinstance(key, int):
-            if key>self.phrase_len**self.size:
-                raise KeyError("Key %s is very big."%(key,))
-            elif key<1:
-                raise KeyError("Key %s is very small."%(key,))                
-            res = str(self)
-            self.int_values[res] = key
-            return res
-        elif isinstance(key, str):
-            res = int(self)
-            self.str_values[res] = key
-            return res
-        else:
-            raise KeyError
     
-    def __str__(self):
-        """Function to encode."""        
-        if not self.str_values.get(self.key, False):
-            digit = self.key
-            size = self.size-1
-            length = self.phrase_len
-            results = [self.phrase[0]]*(size+1)            
-            while True:
-                digit, i = divmod(digit, length)
-                results[size] = self.phrase[i]
-                size -= 1                
-                if digit==0:
-                    break
-            self.str_values[self.key] = ''.join(results)
-        return self.str_values[self.key]
+    def get_key_by_id(self, id):
+        """Function to encode."""
+        if not isinstance(id, int):
+            raise TypeError('ID mustr be integer')        
+        if id>self.phrase_len**self.size:
+            raise ValueError("Key %s is very big."%(id,))
+        elif id<1:
+            raise ValueError("Key %s is very small."%(id))          
+        digit = id
+        size = self.size-1
+        length = self.phrase_len
+        results = [self.phrase[0]]*(size+1)            
+        while True:
+            digit, i = divmod(digit, length)
+            results[size] = self.phrase[i]
+            size -= 1                
+            if digit==0:
+                break
+        return ''.join(results)
     
-    def __int__(self):
-        """Function to decode."""        
+    def get_id_by_key(self, key):
+        """Function to decode."""
+        if not isinstance(key, str):
+            raise TypeError('Key must be a string')                
         size = self.phrase_len
-        if not self.int_values.get(self.key, False):
-            positions = dict()
-            length = len(self.key)-1
-            j = 0
-            total = 0
-            while length>=0:
-                i=self.key[length]
-                length-=1
-                if not positions.get(i, False):
-                    positions[i] = self.phrase.index(i)
-                total += (size**j)*positions[i]
-                j+=1
-            self.int_values[self.key] = total
-        return self.int_values[self.key]
-
+        positions = dict()
+        length = len(key)-1
+        j = 0
+        total = 0
+        while length>=0:
+            i=key[length]
+            length-=1
+            if not positions.get(i, False):
+                positions[i] = self.phrase.index(i)
+            total += (size**j)*positions[i]
+            j+=1
+        return total
+ 
