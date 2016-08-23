@@ -3,8 +3,8 @@ class Chex(object):
     
     use like:
         c = Chex(phrase='abc', size=3)
-        c.get_id_by_key['aab']
-        c.get_key_by_id(1)
+        c.get_id_by_key('aab') // return 1
+        c.get_key_by_id(1) // return aab
     
     """  
 
