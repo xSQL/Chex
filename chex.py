@@ -1,13 +1,10 @@
-class Chex:
+class Chex(object):
     """Encode && decode decimal digits from custom set of chars
     
     use like:
-        c = Chex()
-        c[key]
-
-   'key' may be string or int:
-    if key is integer then hi will be encoded to string and returned
-    if key is string then hi will be decoded to int and returned    
+        c = Chex(phrase='abc', size=3)
+        c.get_id_by_key['aab']
+        c.get_key_by_id(1)
     
     """  
 
@@ -15,11 +12,11 @@ class Chex:
         """Initialize code length and chars set"""
         if not isinstance(size, int):
             raise TypeError('Size must be set as integer')
-        if size<1:
+        if size < 1:
             raise ValueError('Size must be grate than 0')
         if not isinstance(phrase, str):
             raise TypeError('Alphabet phrase must be set as string')
-        if len(phrase)!=len(set(phrase)):
+        if len(phrase) != len(set(phrase)):
             raise ValueError('Alphabet contain duplicates')
         
         self.size = size
@@ -37,7 +34,7 @@ class Chex:
         digit = id
         size = self.size-1
         length = self.phrase_len
-        results = [self.phrase[0]]*(size+1)            
+        results = [self.phrase[0]] * (size+1)            
         while True:
             digit, i = divmod(digit, length)
             results[size] = self.phrase[i]
