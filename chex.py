@@ -26,7 +26,7 @@ class Chex(object):
     def get_key_by_id(self, id):
         """Function to encode."""
         if not isinstance(id, int):
-            raise TypeError('ID mustr be integer')        
+            raise TypeError('ID must be integer')        
         if id>self.phrase_len**self.size:
             raise ValueError("Key %s is very big."%(id,))
         elif id<1:
